@@ -4,16 +4,16 @@ public class lc0274 {
   class Solution {
     public int hIndex(int[] citations) {
       int h = 0;
-      for (int i = 0; i < citations.length; i++) {
+      for (int i : citations) {
         int val = 0;
-        if (citations[i] != 0 && citations[i] > h) {
-          for (int j = 0; j < citations.length; j++) {
-            if (citations[j] >= citations[i]) {
+        if (i != 0 && i > h) {
+          for (int j : citations) {
+            if (j >= i) {
               val++;
             }
           }
         }
-        int min = val < citations[i] ? val : citations[i];
+        int min = val < i ? val : i;
         h = h > min ? h : min;
       }
       return h;

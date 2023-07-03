@@ -18,5 +18,19 @@ public class lc0274 {
       }
       return h;
     }
+    public int hIndex2(int[] citations) {
+      for (int h = 0; h < citations.length + 1; h++) {
+        int count = 0;
+        for (int i = 0; i < citations.length; i++) {
+          if (citations[i] >= h) {
+            count++;
+          }
+        }
+        if (h > count) {
+          return h - 1;
+        }
+      }
+      return citations.length;
+    }
   }
 }

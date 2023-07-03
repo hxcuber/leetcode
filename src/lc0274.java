@@ -11,9 +11,8 @@ public class lc0274 {
             val++;
           }
         }
-        if (val >= citations[i]) {
-          h = h > citations[i] ? h : citations[i];
-        }
+        int min = val < citations[i] ? val : citations[i];
+        h = h > min ? h : min;
       }
       return h;
     }

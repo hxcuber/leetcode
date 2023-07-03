@@ -6,7 +6,7 @@ public class lc0274 {
       int h = 0;
       for (int i : citations) {
         int val = 0;
-        if (i != 0 && i > h) {
+        if (i > h) {
           for (int j : citations) {
             if (j >= i) {
               val++;

@@ -38,15 +38,17 @@ public class lc0274 {
       for (int i = 0; i < citations.length + 1; i++) {
         bucket[i] = 0;
       }
-      for (int i = 0; i < citations.length; i++) {
-        if (citations[i] >= citations.length + 1) {
+      for (int i : citations) {
+        if (i >= citations.length) {
           bucket[citations.length]++;
         } else {
           bucket[i]++;
         }
       }
-      for (int j = citations.length; j >= 0 ; j++) {
-        if (bucket[j] >= j) {
+      int count = 0;
+      for (int j = citations.length; j >= 0 ; j--) {
+        count += bucket[j];
+        if (count >= j) {
           return j;
         }
       }

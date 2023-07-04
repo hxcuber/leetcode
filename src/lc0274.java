@@ -1,7 +1,6 @@
-import java.util.Arrays;
-
 public class lc0274 {
   class Solution {
+    // First try
     public int hIndex(int[] citations) {
       int h = 0;
       for (int i : citations) {
@@ -18,6 +17,7 @@ public class lc0274 {
       }
       return h;
     }
+    // Second try, tried to optimise, was on the right lines
     public int hIndex2(int[] citations) {
       for (int h = 0; h < citations.length + 1; h++) {
         int count = 0;
@@ -31,6 +31,26 @@ public class lc0274 {
         }
       }
       return citations.length;
+    }
+    // Third try using bucket sort
+    public int hIndex3(int[] citations) {
+      int[] bucket = new int[citations.length + 1];
+      for (int i = 0; i < citations.length + 1; i++) {
+        bucket[i] = 0;
+      }
+      for (int i = 0; i < citations.length; i++) {
+        if (citations[i] >= citations.length + 1) {
+          bucket[citations.length]++;
+        } else {
+          bucket[i]++;
+        }
+      }
+      for (int j = citations.length + 1; j >= 0 ; j++) {
+        if (bucket[j] >= j) {
+          return j;
+        }
+      }
+      return 0;
     }
   }
 }

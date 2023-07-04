@@ -20,7 +20,12 @@ public class lc1462 {
       if (visited.size() == numCourses) {
         return startEdges.stream().reduce(false, (b, edge) -> b | (edge[1] == end), Boolean::logicalOr);
       }
-      return startEdges.stream().map(edge -> dfs(numCourses, prerequesites, edge[1], end, visited)).reduce(false, Boolean::logicalOr);
+      for (int[] edge : startEdges) {
+        if (dfs(numCourses, prerequesites, edge[1], end, visited)) {
+          return true;
+        }
+      }
+      return false;
     }
   }
 }

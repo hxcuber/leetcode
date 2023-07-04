@@ -13,7 +13,7 @@ public class lc0274 {
           }
         }
         int min = val < i ? val : i;
-        h = h > min ? h : min;
+        h = h > min ? h : min; // max
       }
       return h;
     }

@@ -45,7 +45,7 @@ public class lc0274 {
           bucket[i]++;
         }
       }
-      for (int j = citations.length + 1; j >= 0 ; j++) {
+      for (int j = citations.length; j >= 0 ; j++) {
         if (bucket[j] >= j) {
           return j;
         }

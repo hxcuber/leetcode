@@ -11,17 +11,41 @@ public class lc1462 {
   class Solution{
     // first try
     // this is slow because its running the dfs for every query, so there is a lot of repeated work
-    public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequesites, int[][] queries) {
+    public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
       // basically dfs
       // find if there a path in prerequisites that matches the start and finish of queries
-      return Arrays.stream(queries).map(query -> dfs(numCourses, prerequesites, query[0], query[1], new HashSet<>())).toList();
+      return Arrays.stream(queries).map(query -> dfs(numCourses, prerequisites, query[0], query[1], new HashSet<>())).toList();
     }
 
     // second try
     // calculate transitive closure first, then look up queries
-    public List<Boolean> checkIfPrerequisite2(int numCourses, int[][] prerequesites, int[][] queries) {
-      Set<List<Integer>> closure = transClosure(numCourses, prerequesites);
+    public List<Boolean> checkIfPrerequisite2(int numCourses, int[][] prerequisites, int[][] queries) {
+      Set<List<Integer>> closure = transClosure(numCourses, prerequisites);
       return Arrays.stream(queries).map(query -> closure.contains(List.of(query[0], query[1]))).toList();
+    }
+
+    public List<Boolean> checkIfPrerequisite3(int numCourses, int[][] prerequisites, int[][] queries) {
+      boolean[][] adjMatrix = new boolean[numCourses][numCourses];
+
+      for (int i = 0; i < numCourses; i++) {
+        for (int j = 0; j < numCourses; j++) {
+          adjMatrix[i][j] = false;
+        }
+      }
+
+      for (int[] edge: prerequisites) {
+        adjMatrix[edge[0]][edge[1]] = true;
+      }
+
+      for (int k = 0; k < numCourses; k++) {
+        for (int i = 0; i < numCourses; i++) {
+          for (int j = 0; j < numCourses; j++) {
+            adjMatrix[i][j] = adjMatrix[i][j] || (adjMatrix[i][k] && adjMatrix[k][j]);
+          }
+        }
+      }
+
+      return Arrays.stream(queries).map(query -> adjMatrix[query[0]][query[1]]).toList();
     }
 
     private Set<List<Integer>> transClosure(int numCourses, int[][] prerequisites) {
@@ -56,17 +80,17 @@ public class lc1462 {
       return ret;
     }
 
-    private Boolean dfs(int numCourses, int[][] prerequesites, int start, int end, Set<Integer> visited) {
+    private Boolean dfs(int numCourses, int[][] prerequisites, int start, int end, Set<Integer> visited) {
       if (start == end) {
         return true;
       }
       visited.add(start);
-      List<int[]> startEdges = Arrays.stream(prerequesites).filter(edge -> edge[0] == start && !visited.contains(edge[1])).toList();
+      List<int[]> startEdges = Arrays.stream(prerequisites).filter(edge -> edge[0] == start && !visited.contains(edge[1])).toList();
       if (visited.size() == numCourses) {
         return startEdges.stream().reduce(false, (b, edge) -> b | (edge[1] == end), Boolean::logicalOr);
       }
       for (int[] edge : startEdges) {
-        if (dfs(numCourses, prerequesites, edge[1], end, visited)) {
+        if (dfs(numCourses, prerequisites, edge[1], end, visited)) {
           return true;
         }
       }

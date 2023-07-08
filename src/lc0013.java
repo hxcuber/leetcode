@@ -8,8 +8,8 @@ public class lc0013 {
         int currVal = romValue(sArray[i]);
         int nextVal = romValue(sArray[nextIndex]);
         if (nextVal > currVal) {
-          total += nextVal - 1;
-          i = nextVal;
+          total += nextVal - currVal;
+          i = nextIndex;
         } else {
           total += currVal;
         }
